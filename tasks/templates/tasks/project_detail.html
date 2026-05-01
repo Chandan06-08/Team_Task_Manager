@@ -1,0 +1,88 @@
+{% extends 'tasks/base.html' %}
+{% block content %}
+<section class="panel">
+    <div class="section-header">
+        <div>
+            <h1>{{ project.name }}</h1>
+            <p>{{ project.description|default:'No description provided.' }}</p>
+        </div>
+        <div>
+            {% if membership.role == 'ADMIN' %}
+                <a class="button" href="{% url 'create_task' project.id %}">Create Task</a>
+                <a class="button secondary" href="{% url 'add_member' project.id %}">Add Member</a>
+            {% endif %}
+        </div>
+    </div>
+    <div class="summary-row project-summary">
+        <article class="summary-card">
+            <span>Total Tasks</span>
+            <strong>{{ tasks|length }}</strong>
+        </article>
+        <article class="summary-card">
+            <span>Team Members</span>
+            <strong>{{ members|length }}</strong>
+        </article>
+        <article class="summary-card">
+            <span>Created On</span>
+            <strong>{{ project.created_at|date:'M j, Y' }}</strong>
+        </article>
+        <article class="summary-card">
+            <span>Project Owner</span>
+            <strong>{{ project.creator.get_full_name|default:project.creator.username }}</strong>
+        </article>
+    </div>
+    <div class="grid project-detail">
+        <div class="panel-inner">
+            <h2>Tasks</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Status</th>
+                        <th>Priority</th>
+                        <th>Assignee</th>
+                        <th>Due Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for task in tasks %}
+                        <tr class="{% if task.is_overdue %}overdue{% endif %}">
+                            <td>{{ task.title }}</td>
+                            <td>{{ task.get_status_display }}</td>
+                            <td>{{ task.get_priority_display }}</td>
+                            <td>
+                                {% if task.assignee %}
+                                    {{ task.assignee.get_full_name|default:task.assignee.username }}
+                                {% else %}
+                                    Unassigned
+                                {% endif %}
+                            </td>
+                            <td>{{ task.due_date|default:'—' }}</td>
+                            <td><a href="{% url 'update_task' task.id %}">Update</a></td>
+                        </tr>
+                    {% empty %}
+                        <tr><td colspan="6">No tasks in this project yet.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="panel-inner">
+            <h2>Team Members</h2>
+            <ul class="member-list">
+                {% for member in members %}
+                    <li>
+                        <strong>{{ member.get_full_name|default:member.username }}</strong>
+                        <span>{{ member.email }}</span>
+                        {% if membership.role == 'ADMIN' and member != request.user %}
+                            <a class="remove-link" href="{% url 'remove_member' project.id member.id %}">Remove</a>
+                        {% endif %}
+                    </li>
+                {% empty %}
+                    <li>No members yet.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</section>
+{% endblock %}

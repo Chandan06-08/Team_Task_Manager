@@ -1,0 +1,60 @@
+{% extends 'tasks/base.html' %}
+{% block content %}
+<section class="panel dashboard-summary">
+    <div class="section-header">
+        <div>
+            <h1>Dashboard</h1>
+            <p class="page-subtitle">A quick executive view of your project performance.</p>
+        </div>
+        <a class="button secondary" href="{% url 'project_list' %}">View Projects</a>
+    </div>
+    <div class="summary-row">
+        <article class="summary-card">
+            <span>Total Projects</span>
+            <strong>{{ projects|length }}</strong>
+        </article>
+        <article class="summary-card">
+            <span>Open Tasks</span>
+            <strong>{{ status_counts.todo|default:0 }}</strong>
+        </article>
+        <article class="summary-card">
+            <span>Late Tasks</span>
+            <strong>{{ overdue_tasks }}</strong>
+        </article>
+        <article class="summary-card">
+            <span>Active Members</span>
+            <strong>{{ assignee_counts|length }}</strong>
+        </article>
+    </div>
+    <div class="grid cards">
+        <div class="card"><span>Total tasks</span><strong>{{ total_tasks }}</strong></div>
+        <div class="card"><span>To Do</span><strong>{{ status_counts.todo }}</strong></div>
+        <div class="card"><span>In Progress</span><strong>{{ status_counts.in_progress }}</strong></div>
+        <div class="card"><span>Done</span><strong>{{ status_counts.done }}</strong></div>
+        <div class="card"><span>Overdue</span><strong>{{ overdue_tasks }}</strong></div>
+    </div>
+</section>
+<section class="panel">
+    <h2>Your Projects</h2>
+    <div class="list">
+        {% for project in projects %}
+            <a class="list-item" href="{% url 'project_detail' project.id %}">
+                <strong>{{ project.name }}</strong>
+                <span>{{ project.description|default:'No description' }}</span>
+            </a>
+        {% empty %}
+            <p>No projects yet. <a href="{% url 'create_project' %}">Create one</a>.</p>
+        {% endfor %}
+    </div>
+</section>
+<section class="panel">
+    <h2>Tasks Per User</h2>
+    <ul class="inline-list">
+        {% for item in assignee_counts %}
+            <li>{{ item.assignee__username|default:'Unassigned' }}: {{ item.count }}</li>
+        {% empty %}
+            <li>No tasks assigned.</li>
+        {% endfor %}
+    </ul>
+</section>
+{% endblock %}

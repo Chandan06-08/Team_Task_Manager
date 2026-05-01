@@ -1,0 +1,18 @@
+{% extends 'tasks/base.html' %}
+{% block content %}
+<section class="panel">
+    <h1>{{ title }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="form-actions">
+            <button type="submit" class="button">Save Task</button>
+            {% if project %}
+                <a class="button secondary" href="{% url 'project_detail' project.id %}">Cancel</a>
+            {% else %}
+                <a class="button secondary" href="{% url 'project_list' %}">Cancel</a>
+            {% endif %}
+        </div>
+    </form>
+</section>
+{% endblock %}

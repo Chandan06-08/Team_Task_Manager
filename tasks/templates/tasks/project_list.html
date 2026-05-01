@@ -1,0 +1,19 @@
+{% extends 'tasks/base.html' %}
+{% block content %}
+<section class="panel">
+    <div class="section-header">
+        <h1>Your Projects</h1>
+        <a class="button" href="{% url 'create_project' %}">New Project</a>
+    </div>
+    <div class="list">
+        {% for project in projects %}
+            <a class="list-item" href="{% url 'project_detail' project.id %}">
+                <strong>{{ project.name }}</strong>
+                <span>{{ project.description|default:'No description' }}</span>
+            </a>
+        {% empty %}
+            <p>No active projects yet. Create one to start tracking tasks.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}
