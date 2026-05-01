@@ -13,8 +13,8 @@ load_dotenv(BASE_DIR / '.env')
 
 SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-ethara-default-secret-key')
 DEBUG = os.getenv('DEBUG', 'True').lower() in ('true', '1', 'yes')
-ALLOWED_HOSTS = ['*']
-CSRF_TRUSTED_ORIGINS = ['https://*.railway.app']
+ALLOWED_HOSTS = ['web-production-911c3.up.railway.app', '.up.railway.app', 'localhost', '127.0.0.1', '*']
+CSRF_TRUSTED_ORIGINS = ['https://web-production-911c3.up.railway.app', 'https://*.up.railway.app', 'https://*.railway.app']
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 INSTALLED_APPS = [
