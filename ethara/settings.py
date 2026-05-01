@@ -60,18 +60,20 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ethara.wsgi.application'
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+
 db_from_env = os.getenv('DATABASE_URL')
 if db_from_env and (db_from_env.startswith('postgres://') or db_from_env.startswith('postgresql://')):
-    DATABASES = {
-        'default': dj_database_url.parse(db_from_env, conn_max_age=600, conn_health_checks=True)
-    }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
+    DATABASES['default'] = dj_database_url.parse(
+        db_from_env, 
+        conn_max_age=600, 
+        conn_health_checks=True
+    )
 
 AUTH_PASSWORD_VALIDATORS = [
     {
