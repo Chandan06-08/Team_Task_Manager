@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import User
 
 from .models import Membership, Project, Task
@@ -64,3 +64,7 @@ class TaskStatusForm(forms.ModelForm):
 class AddMemberForm(forms.Form):
     email = forms.EmailField(label='Member Email')
     role = forms.ChoiceField(choices=Membership.Role.choices, label='Role')
+
+
+class LoginForm(AuthenticationForm):
+    username = forms.CharField(label='Email', widget=forms.TextInput(attrs={'autofocus': True}))

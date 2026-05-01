@@ -10,6 +10,7 @@ from django.utils import timezone
 
 from .forms import (
     AddMemberForm,
+    LoginForm,
     ProjectForm,
     SignupForm,
     TaskForm,
@@ -36,13 +37,13 @@ def login_view(request):
         return redirect('dashboard')
 
     if request.method == 'POST':
-        form = AuthenticationForm(request, data=request.POST)
+        form = LoginForm(request, data=request.POST)
         if form.is_valid():
             user = form.get_user()
             login(request, user)
             return redirect('dashboard')
     else:
-        form = AuthenticationForm()
+        form = LoginForm()
     return render(request, 'tasks/login.html', {'form': form})
 
 
