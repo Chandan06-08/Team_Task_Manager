@@ -67,4 +67,15 @@ class AddMemberForm(forms.Form):
 
 
 class LoginForm(AuthenticationForm):
-    username = forms.CharField(label='Email', widget=forms.TextInput(attrs={'autofocus': True}))
+    username = forms.EmailField(
+        label='Email',
+        widget=forms.EmailInput(attrs={'autofocus': True}),
+    )
+
+    error_messages = {
+        'invalid_login': (
+            "Please enter a correct email and password. Note that both "
+            "fields may be case-sensitive."
+        ),
+        'inactive': "This account is inactive.",
+    }
