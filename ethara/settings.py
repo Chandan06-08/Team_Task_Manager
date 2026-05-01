@@ -101,7 +101,7 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/login/'
 
 # Final override for Railway deployment
-ALLOWED_HOSTS = ['*']
-CSRF_TRUSTED_ORIGINS = ['https://*.railway.app', 'https://*.up.railway.app']
-print("Django settings loaded with ALLOWED_HOSTS = ['*']")
+ALLOWED_HOSTS = ['web-production-911c3.up.railway.app', '127.0.0.1', 'localhost', '*']
+CSRF_TRUSTED_ORIGINS = ['https://web-production-911c3.up.railway.app', 'https://*.railway.app', 'https://*.up.railway.app']
+print(f"Django settings loaded. ALLOWED_HOSTS: {ALLOWED_HOSTS}")
 
